@@ -8,18 +8,17 @@
 using namespace genv;
 using namespace std;
 
-void eventloop()
-{
-
-}
 int main()
 {
-    Master tabla_hat(10);
-    tabla_hat.rajz();
+    Master tabla(10);
+    tabla.rajz();
     event ev;
+    tabla.babufelrak(ev);
+    tabla.rajz();
     while(gin >> ev)
     {
-        tabla_hat.rajz();
+        tabla.rajz();
+        tabla.handle(ev);
         if (ev.keycode == 27)
             break;
     }
