@@ -23,15 +23,20 @@ Mezo::Mezo(int x, int y, int sx, int sy, int Tx, int Ty): WidAlap(x,y,sx,sy)
         szin[2]=70;
     }
     kilott=0;
+    kijelolt=0;
 }
 bool Mezo::kilott_e()
 {
     return kilott;
 }
+void Mezo::kiloves()
+{
+    kilott=1;
+}
 void Mezo::rajz()
 {
-    if (check)
-        gout<<move_to(posX,posY)<<color(0,100,0)<<box(sizeX,sizeY);
+    if (kijelolt)
+        gout<<move_to(posX,posY)<<color(0,200,0)<<box(sizeX,sizeY);
     else
         gout<<move_to(posX,posY)<<color(szin[0],szin[1],szin[2])<<box(sizeX,sizeY);
     if (kilott)
