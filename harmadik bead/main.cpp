@@ -15,6 +15,13 @@ int main()
     tabla.rajz();
     while(gin >> ev)
     {
+    tabla.rajz();
+    event ev;
+    tabla.babufelrak(ev);
+    tabla.rajz();
+    while(gin >> ev)
+    {
+        tabla.rajz();
         tabla.handle(ev);
         if (ev.keycode == 27)
             break;

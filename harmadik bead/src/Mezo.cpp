@@ -43,7 +43,7 @@ void Mezo::rajz()
     if (kilott)
         gout<<move_to(posX,posY)<<color(0,0,0)<<line_to(posX+sizeX,posY+sizeY)<<move_to(posX+sizeX,posY)<<line_to(posX,posY+sizeY);
 
-    //bábuk
+    //bï¿½buk
     int szincsapat=0;
     if (kivanrajta!=0)
     {
