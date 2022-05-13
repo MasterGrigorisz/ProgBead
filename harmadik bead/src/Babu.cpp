@@ -9,7 +9,7 @@ Babu::Babu(int x, int y, bool csap, int mezom): WidAlap(x,y,mezom,mezom)
 {
     csapat=csap;
     tudlepni=1;
-    //posX ï¿½s posY hasznï¿½lva a bï¿½bu tï¿½blï¿½n lï¿½vï¿½ helyï¿½re -- update: hï¿½lyesï¿½g volt
+    //posX és posY használva a bábu táblán lévõ helyére -- update: hülyeség volt
     mezomeret=mezom;
 }
 void Babu::rajz()

@@ -27,7 +27,7 @@ Master::Master(int dar)
     gout.open(mezomeret*darab,mezomeret*darab);
     babufelrak();
 
-    for (vector<WidAlap *> lepes : tabla) ///random nullazas mert nyï¿½gï¿½s
+    for (vector<WidAlap *> lepes : tabla) ///random nullazas mert nyûgös
         for (WidAlap * lepes2 : lepes)
             lepes2->check=0;
 }
@@ -36,11 +36,6 @@ void Master::rajz()
     for (vector<WidAlap *> lepes : tabla) ///mezo
         for (WidAlap * lepes2 : lepes)
             lepes2->rajz();
-    for (Babu * lepo : feher) //feher babu
-        lepo->rajz();
-    for (Babu * lepo : fekete) //fekete babu
-        lepo->rajz();
-
     gout<<refresh;
 }
 void Master::handle(genv::event ev)
