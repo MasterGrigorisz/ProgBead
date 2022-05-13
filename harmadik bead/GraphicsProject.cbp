@@ -53,13 +53,11 @@
 			<Add library="dxguid" />
 			<Add directory="lib" />
 		</Linker>
-		<Unit filename="include/Babu.hpp" />
 		<Unit filename="include/Master.hpp" />
 		<Unit filename="include/Mezo.hpp" />
 		<Unit filename="include/WidAlap.hpp" />
 		<Unit filename="include/graphics.hpp" />
 		<Unit filename="main.cpp" />
-		<Unit filename="src/Babu.cpp" />
 		<Unit filename="src/Master.cpp" />
 		<Unit filename="src/Mezo.cpp" />
 		<Unit filename="src/WidAlap.cpp" />

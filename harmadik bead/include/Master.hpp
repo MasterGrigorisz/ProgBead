@@ -15,8 +15,9 @@ public:
     Master(int darab);
     void rajz();
     void handle(genv::event ev);
-    void babufelrak(genv::event ev);
-
+    void csekkelo(genv::event ev);
+    void babufelrak();
+    void babuleptetes(int x, int y);
 protected:
     int darab, mezomeret;
     vector<vector<WidAlap*>> tabla;

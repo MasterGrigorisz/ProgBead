@@ -10,15 +10,15 @@ class WidAlap
 protected:
     int posX, posY, sizeX, sizeY;
 
+    int kivanrajta;
 public:
-    bool check /*, checkUP, checkDW*/;
+    int tablapos[1];
+    bool check;
     WidAlap(int x, int y, int sx, int sy);
     bool ischecked(int egerX, int egerY);
-    //virtual bool issmallcheckedUP(int egerX, int egerY)=0;
-    //virtual bool issmallcheckedDW(int egerX, int egerY)=0;
     virtual void rajz()=0;
     virtual void handle(genv::event ev) = 0;
-    virtual std::string mitirjonki()=0;
+    virtual void kivanrajta_modosit(int kivan)=0;
 };
 
 #endif // WIDALAP_H

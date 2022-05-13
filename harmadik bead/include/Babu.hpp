@@ -15,6 +15,7 @@ public:
     void rajz();
     void handle(genv::event ev);
     bool tud_e_lepni();
+    void lepes(int x, int y);
 protected:
     bool csapat;
     bool tudlepni;

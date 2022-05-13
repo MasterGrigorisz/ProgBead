@@ -4,11 +4,9 @@
 #include <iostream>
 using namespace std;
 using namespace genv;
-WidAlap::WidAlap(int x, int y, int sx, int sy) : posX(x+1), posY(y+1), sizeX(sx), sizeY(sy)
+WidAlap::WidAlap(int x, int y, int sx, int sy) : posX(x), posY(y), sizeX(sx), sizeY(sy)
 {
-    check=false;
-    /* checkUP=false;
-     checkDW=false;*/
+    check=0;
 }
 bool WidAlap::ischecked(int egerX, int egerY)
 {
@@ -17,3 +15,4 @@ bool WidAlap::ischecked(int egerX, int egerY)
             egerY > posY            and
             egerY < posY + sizeY;
 }
+
