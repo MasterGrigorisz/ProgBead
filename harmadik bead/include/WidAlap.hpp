@@ -12,13 +12,15 @@ protected:
 
     int kivanrajta;
 public:
+
     int tablapos[1];
     bool check;
     WidAlap(int x, int y, int sx, int sy);
     bool ischecked(int egerX, int egerY);
     virtual void rajz()=0;
     virtual void handle(genv::event ev) = 0;
-    virtual void kivanrajta_modosit(int kivan)=0;
+    virtual void kivanrajta_modosit(int kivan);
+    virtual int kivanrajta_leker();
 };
 
 #endif // WIDALAP_H

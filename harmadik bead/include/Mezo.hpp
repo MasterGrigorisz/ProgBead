@@ -16,10 +16,11 @@ public:
     void handle(genv::event ev);
     bool kilott_e();
     void kiloves();
-    void kivanrajta_modosit(int kivan);
+    /*void kivanrajta_modosit(int kivan);
+    int kivanrajta_leker();*/
 protected:
     int szin[2];
-    bool kilott;
+    //bool kilott;
 
     bool kijelolt;
 

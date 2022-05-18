@@ -15,4 +15,11 @@ bool WidAlap::ischecked(int egerX, int egerY)
             egerY > posY            and
             egerY < posY + sizeY;
 }
-
+int WidAlap::kivanrajta_leker()
+{
+    return kivanrajta;
+}
+void WidAlap::kivanrajta_modosit(int kivan)
+{
+    kivanrajta=kivan;
+}

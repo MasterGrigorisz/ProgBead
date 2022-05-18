@@ -20,6 +20,8 @@ public:
     void babuleptetes(int x, int y);
 protected:
     int darab, mezomeret;
+    int babutemp;
+    bool voltlepes;
     vector<vector<WidAlap*>> tabla;
     vector<Babu*> feher, fekete;
 };

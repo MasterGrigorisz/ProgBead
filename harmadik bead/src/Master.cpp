@@ -14,6 +14,8 @@ Master::Master(int dar)
 {
     darab=dar;
     mezomeret=69;
+    babutemp=-1;
+    voltlepes=0;
     for (int i=0; i<darab; i++) ///MEZO
     {
         vector<WidAlap*> pakolos;
@@ -40,12 +42,23 @@ void Master::rajz()
 }
 void Master::handle(genv::event ev)
 {
-    {
+
+
+
         if (ev.type == ev_mouse and ev.button==btn_left)
         {
+            for (vector<WidAlap *> lepes1 : tabla)
+            for (WidAlap * lepes2 : lepes1)
+                if (lepes2->check and (lepes2->kivanrajta_leker()==1 or lepes2->kivanrajta_leker()==2) and !voltlepes)
+                    {
+                        babutemp=lepes2->kivanrajta_leker();
+                        lepes2->kivanrajta_modosit(0);
+
+                    }
+            voltlepes=0;
             csekkelo(ev);
         }
-    }
+
     rajz();
 }
 void Master::csekkelo(genv::event ev)
@@ -57,7 +70,14 @@ void Master::csekkelo(genv::event ev)
                 lepes2->check=1;
             if (!lepes2->ischecked(ev.pos_x, ev.pos_y))
                 lepes2->check=0;
+            if (babutemp!=-1 and lepes2->check)
+                {
+                    lepes2->kivanrajta_modosit(babutemp);
+                    babutemp=-1;
+                    voltlepes=1;
+                }
         }
+
 }
 void Master::babufelrak()
 {
