@@ -22,7 +22,7 @@ protected:
     int szin[2];
     //bool kilott;
 
-    bool kijelolt;
+    //bool kijelolt;
 
 
 };

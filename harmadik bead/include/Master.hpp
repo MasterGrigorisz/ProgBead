@@ -22,6 +22,8 @@ protected:
     int darab, mezomeret;
     int babutemp;
     bool voltlepes;
+    int lepeskijelolo[1];
+    void sorabanvan_jelolo();
     vector<vector<WidAlap*>> tabla;
     vector<Babu*> feher, fekete;
 };

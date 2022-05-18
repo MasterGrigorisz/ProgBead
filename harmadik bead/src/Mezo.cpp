@@ -38,6 +38,8 @@ void Mezo::rajz()
 {
     if (check)
         gout<<move_to(posX,posY)<<color(0,200,0)<<box(sizeX,sizeY);
+    else if(kijelolt)
+        gout<<move_to(posX,posY)<<color(szin[1]-100,0,0)<<box(sizeX,sizeY);
     else
         gout<<move_to(posX,posY)<<color(szin[0],szin[1],szin[2])<<box(sizeX,sizeY);
     if (kivanrajta==3)
