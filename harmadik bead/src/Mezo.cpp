@@ -42,7 +42,7 @@ void Mezo::rajz()
     else
         gout<<move_to(posX,posY)<<color(szin[0],szin[1],szin[2])<<box(sizeX,sizeY);
     if(kijelolt)
-        gout<<move_to(posX,posY)<<color(szin[1]-100,0,0)<<box(sizeX,sizeY);
+        gout<<move_to(posX,posY)<<color(szin[1]-100,50,50)<<box(sizeX,sizeY);
     if (kivanrajta==3)
         gout<<move_to(posX,posY)<<color(0,0,0)<<line_to(posX+sizeX,posY+sizeY)<<move_to(posX+sizeX,posY)<<line_to(posX,posY+sizeY);
 
