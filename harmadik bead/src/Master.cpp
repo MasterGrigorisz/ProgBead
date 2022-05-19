@@ -97,11 +97,7 @@ void Master::vane_a_mezonbabu()
 
 void Master::sorabanvan_jelolo()
 {
-    //reset
-    /*for (vector<WidAlap *> lepes1 : tabla)
-            for (WidAlap * lepes2 : lepes1)
-                lepes2->kijelolt=0;*/
-    //--
+    if (lepeskijeloloY>=0 and lepeskijeloloX>=0){
     bool    utkozveXYY=1, //jobbra
             utkozveXXYY=1, //jobbra le
             utkozveXXY=1, //lefele
@@ -182,6 +178,8 @@ void Master::sorabanvan_jelolo()
                 seged4++;
             }
         }
+        lepeskijeloloX=-1;
+        lepeskijeloloY=-1;}
 }
 
 void Master::babuatrako()
