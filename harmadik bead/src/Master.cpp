@@ -18,9 +18,10 @@ Master::Master(int dar)
     voltlepes=0;
     lepeskijeloloX=-1;
     lepeskijeloloY=-1;
-    lovoseged=0;
     lepestortent=0;
     ki_kovetkezik=1;
+    voltloves=0;
+    checkeltTemp=ki_kovetkezik;
     for (int i=0; i<darab; i++) ///MEZO
     {
         vector<WidAlap*> pakolos;
@@ -33,10 +34,6 @@ Master::Master(int dar)
     }
     gout.open(mezomeret*darab,mezomeret*darab);
     babufelrak();
-
-    /*for (vector<WidAlap *> lepes : tabla) ///random nullazas mert nyûgös
-        for (WidAlap * lepes2 : lepes)
-            ;//lepes2->check=0;*/
 }
 void Master::rajz()
 {
@@ -45,57 +42,71 @@ void Master::rajz()
             lepes2->rajz();
     gout<<refresh;
 }
-void Master::handle(genv::event ev)
+void Master::handle_seged(event ev, int kijon)
 {
     if (ev.type == ev_mouse and ev.button==btn_left)
     {
-        lovoseged++;
-        cout<<lovoseged<<" master handle eleje"<<endl;
         csekkelo(ev);
-        vane_a_mezonbabu();
-        sorabanvan_jelolo();
-        rajz();
+        for (vector<WidAlap *> lepes : tabla)
+            for (WidAlap * lepes2 : lepes)
+                if (lepes2->check and lepes2->kivanrajta==kijon)
+                {
+                    vane_a_mezonbabu();
+                    sorabanvan_jelolo();
+                    rajz();
 
-        babuatrako();
-        babulevetel();
-        if (voltlepes)
-        {
-            for (vector<WidAlap *> lepes : tabla)
-                for (WidAlap * lepes2 : lepes)
-                    lepes2->kijelolt=0;
-            rajz();
-        }
-        voltlepes=0;
-vane_a_mezonbabu();
-    sorabanvan_jelolo();
-    rajz();
-        if(lovoseged%3 ==0)
-        {
-            cout<<lovoseged<<endl;
-            lojunk(ev);
-            if (ki_kovetkezik==1) //egymás után léphetnek a színek
-                ki_kovetkezik++;
-            else
-                ki_kovetkezik--;
-            lepestortent++;
-        }
-
-
+                    babuatrako();
+                    babulevetel();
+                    if (voltlepes)
+                    {
+                        for (vector<WidAlap *> lepes : tabla)
+                            for (WidAlap * lepes2 : lepes)
+                                lepes2->kijelolt=0;
+                        rajz();
+                        voltloves=0;
+                    }
+                    voltlepes=0;
+                    vane_a_mezonbabu();
+                    sorabanvan_jelolo();
+                    rajz();
+                    if(!voltloves)
+                    {
+                        lojunk(ev);
+                    }
+                }
+    }
+}
+void Master::handle(genv::event ev)
+{
+    if (ki_kovetkezik==1) //fehér jön
+    {
+        handle_seged(ev,1);
+        handle_seged(ev,0);
+    }
+    if (ki_kovetkezik==2) //fekete jön
+    {
+        handle_seged(ev,2);
+        handle_seged(ev,0);
     }
 }
 void Master::lojunk(event ev)
 {
-    cout<<"lojunk"<<endl;
-
     if (ev.type == ev_mouse and ev.button==btn_left)
         for (vector<WidAlap *> lepes1 : tabla)
             for (WidAlap * lepes2 : lepes1)
-                if (lepes2->ischecked(ev.pos_x, ev.pos_y))
+                if (lepes2->ischecked(ev.pos_x, ev.pos_y) and lepes2->kijelolt)
+                {
                     lepes2->kivanrajta_modosit(3);              ///loves
-    for (vector<WidAlap *> lepes : tabla)
-                for (WidAlap * lepes2 : lepes)
-                    lepes2->kijelolt=0;
+                    for (vector<WidAlap *> lepes3 : tabla)
+                        for (WidAlap * lepes4 : lepes3)
+                            lepes4->kijelolt=0;
+                    voltloves=1;
+
+                    ki_kovetkezik=ki_kovetkezik%2+1;
+                }
+
     rajz();
+
 }
 void Master::csekkelo(genv::event ev)
 {
@@ -103,7 +114,7 @@ void Master::csekkelo(genv::event ev)
         for (WidAlap * lepes2 : lepes1)
         {
             if (lepes2->ischecked(ev.pos_x, ev.pos_y))
-                lepes2->check=1;
+                   lepes2->check=1;
             if (!lepes2->ischecked(ev.pos_x, ev.pos_y))
                 lepes2->check=0;
         }
@@ -223,14 +234,12 @@ void Master::babulevetel()
 {
     for (vector<WidAlap *> lepes1 : tabla) //ha van bábu a mezőn, lépjünk vele
         for (WidAlap * lepes2 : lepes1)
-        {
             if (lepes2->check and (lepes2->kivanrajta==1 or lepes2->kivanrajta==2) and !voltlepes)
             {
                 babuszintemp=lepes2->kivanrajta;
                 lepes2->kivanrajta_modosit(0);
 
             }
-        }
 }
 void Master::babufelrak()
 {

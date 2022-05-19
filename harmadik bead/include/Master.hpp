@@ -23,10 +23,10 @@ protected:
     void babulevetel();
     void babuatrako();
     void lojunk(event ev);
-
-    int darab, mezomeret, lovoseged, lepestortent,ki_kovetkezik;
+    void handle_seged(event ev, int kijon);
+    int darab, mezomeret, lepestortent,ki_kovetkezik, checkeltTemp;
     int babuszintemp;
-    bool voltlepes ;
+    bool voltlepes, voltloves ;
     int lepeskijeloloX, lepeskijeloloY;
     void sorabanvan_jelolo();
     vector<vector<WidAlap*>> tabla;
