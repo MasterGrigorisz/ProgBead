@@ -47,6 +47,7 @@ void Master::handle(genv::event ev)
 {
     if (ev.type == ev_mouse and ev.button==btn_left)
     {
+
         csekkelo(ev);
         vane_a_mezonbabu();
         sorabanvan_jelolo();
@@ -54,12 +55,16 @@ void Master::handle(genv::event ev)
 
         babuatrako();
         babulevetel();
-        if (!voltlepes)
+        if (voltlepes)
         {
-            //sorabanvan_jelolo();
+            for (vector<WidAlap *> lepes : tabla)
+                for (WidAlap * lepes2 : lepes)
+                    lepes2->kijelolt=0;
             rajz();
         }
         voltlepes=0;
+
+
     }
 }
 void Master::csekkelo(genv::event ev)
@@ -81,13 +86,13 @@ void Master::csekkelo(genv::event ev)
 }
 void Master::vane_a_mezonbabu()
 {
-        for (vector<WidAlap *> lepes1 : tabla)
-            for (WidAlap * lepes2 : lepes1)
-                if (lepes2->check and (lepes2->kivanrajta==1 or lepes2->kivanrajta==2))
-                {
-                    lepeskijeloloX=lepes2->tablaposX;
-                    lepeskijeloloY=lepes2->tablaposY;
-                }
+    for (vector<WidAlap *> lepes1 : tabla)
+        for (WidAlap * lepes2 : lepes1)
+            if (lepes2->check and (lepes2->kivanrajta==1 or lepes2->kivanrajta==2))
+            {
+                lepeskijeloloX=lepes2->tablaposX;
+                lepeskijeloloY=lepes2->tablaposY;
+            }
 }
 
 void Master::sorabanvan_jelolo()
@@ -105,7 +110,7 @@ void Master::sorabanvan_jelolo()
             utkozvexxyy=1, //balra fel
             utkozvexxY=1, //felfele
             utkozvexxYY=1 //jobbra fel
-            ; //Kódolás: nagybetü: pozitív irányba indul,    kisbetü: negatív irányba indul,    1db betü: stabil
+                        ; //Kódolás: nagybetü: pozitív irányba indul,    kisbetü: negatív irányba indul,    1db betü: stabil
     int kar1=0, kar2;
     for (vector<WidAlap *> lepes1 : tabla)
     {
@@ -113,21 +118,35 @@ void Master::sorabanvan_jelolo()
         kar2=0;
         for (WidAlap * lepes2 : lepes1)
         {
-            if (lepeskijeloloY<kar1 and lepeskijeloloX==kar2 and utkozveXYY) //jobbra
+            if (lepeskijeloloY>=lepeskijeloloY-kar1-1 and lepeskijeloloX==kar2 and utkozveXYY) //FEL          ///
             {
                 if (lepes2->kivanrajta==0)
                     lepes2->kijelolt=1;
                 else
                     utkozveXYY=0;
             }
-            if (lepeskijeloloY<kar1 and lepeskijeloloX==kar2 and utkozveXYY) //jobbra le
+            if (lepeskijeloloY<kar1 and lepeskijeloloX==kar2 and utkozveXyy) //LE
             {
                 if (lepes2->kivanrajta==0)
                     lepes2->kijelolt=1;
                 else
-                    utkozveXYY=0;
+                    utkozveXyy=0;
             }
-        kar2++;
+            if (lepeskijeloloY==kar1 and lepeskijeloloX>kar2 and utkozveXXY) //BALRA            ////
+            {
+                if (lepes2->kivanrajta==0)
+                    lepes2->kijelolt=1;
+                else
+                    utkozveXXY=0;
+            }
+            if (lepeskijeloloY==kar1 and lepeskijeloloX<kar2 and utkozvexxY) //JOBBRA
+            {
+                if (lepes2->kivanrajta==0)
+                    lepes2->kijelolt=1;
+                else
+                    utkozvexxY=0;
+            }
+            kar2++;
         }
         kar1++;
     }
@@ -138,7 +157,7 @@ void Master::babuatrako()
 {
     for (vector<WidAlap *> lepes1 : tabla)
         for (WidAlap * lepes2 : lepes1)
-            if (babuszintemp!=-1 and lepes2->check)
+            if (babuszintemp!=-1 and lepes2->check and lepes2->kijelolt)
             {
                 lepes2->kivanrajta_modosit(babuszintemp);
                 babuszintemp=-1;
@@ -148,14 +167,15 @@ void Master::babuatrako()
 void Master::babulevetel()
 {
     for (vector<WidAlap *> lepes1 : tabla) //ha van bábu a mezőn, lépjünk vele
-            for (WidAlap * lepes2 : lepes1)
-                {if (lepes2->check and (lepes2->kivanrajta==1 or lepes2->kivanrajta==2) and !voltlepes)
-                {
-                    babuszintemp=lepes2->kivanrajta;
-                    lepes2->kivanrajta_modosit(0);
+        for (WidAlap * lepes2 : lepes1)
+        {
+            if (lepes2->check and (lepes2->kivanrajta==1 or lepes2->kivanrajta==2) and !voltlepes)
+            {
+                babuszintemp=lepes2->kivanrajta;
+                lepes2->kivanrajta_modosit(0);
 
-                }//lepes2->kijelolt=0;
-                }
+            }//lepes2->kijelolt=0;
+        }
 }
 void Master::babufelrak()
 {
