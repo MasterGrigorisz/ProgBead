@@ -22,11 +22,11 @@ protected:
     void vane_a_mezonbabu();
     void babulevetel();
     void babuatrako();
+    void lojunk(event ev);
 
-
-    int darab, mezomeret;
+    int darab, mezomeret, lovoseged, lepestortent,ki_kovetkezik;
     int babuszintemp;
-    bool voltlepes;
+    bool voltlepes ;
     int lepeskijeloloX, lepeskijeloloY;
     void sorabanvan_jelolo();
     vector<vector<WidAlap*>> tabla;

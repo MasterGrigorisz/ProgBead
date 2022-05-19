@@ -18,13 +18,15 @@ Master::Master(int dar)
     voltlepes=0;
     lepeskijeloloX=-1;
     lepeskijeloloY=-1;
+    lovoseged=0;
+    lepestortent=0;
+    ki_kovetkezik=1;
     for (int i=0; i<darab; i++) ///MEZO
     {
         vector<WidAlap*> pakolos;
         for (int j=0; j<darab; j++)
         {
             Mezo* rakjad =new Mezo(mezomeret*j,mezomeret*i,mezomeret,mezomeret,j,i);
-            //cout<<j<<" master const "<<i<<endl;
             pakolos.push_back(rakjad);
         }
         tabla.push_back(pakolos);
@@ -32,9 +34,9 @@ Master::Master(int dar)
     gout.open(mezomeret*darab,mezomeret*darab);
     babufelrak();
 
-    for (vector<WidAlap *> lepes : tabla) ///random nullazas mert nyûgös
+    /*for (vector<WidAlap *> lepes : tabla) ///random nullazas mert nyûgös
         for (WidAlap * lepes2 : lepes)
-            ;//lepes2->check=0;
+            ;//lepes2->check=0;*/
 }
 void Master::rajz()
 {
@@ -47,7 +49,8 @@ void Master::handle(genv::event ev)
 {
     if (ev.type == ev_mouse and ev.button==btn_left)
     {
-
+        lovoseged++;
+        cout<<lovoseged<<" master handle eleje"<<endl;
         csekkelo(ev);
         vane_a_mezonbabu();
         sorabanvan_jelolo();
@@ -63,9 +66,36 @@ void Master::handle(genv::event ev)
             rajz();
         }
         voltlepes=0;
+vane_a_mezonbabu();
+    sorabanvan_jelolo();
+    rajz();
+        if(lovoseged%3 ==0)
+        {
+            cout<<lovoseged<<endl;
+            lojunk(ev);
+            if (ki_kovetkezik==1) //egymás után léphetnek a színek
+                ki_kovetkezik++;
+            else
+                ki_kovetkezik--;
+            lepestortent++;
+        }
 
 
     }
+}
+void Master::lojunk(event ev)
+{
+    cout<<"lojunk"<<endl;
+
+    if (ev.type == ev_mouse and ev.button==btn_left)
+        for (vector<WidAlap *> lepes1 : tabla)
+            for (WidAlap * lepes2 : lepes1)
+                if (lepes2->ischecked(ev.pos_x, ev.pos_y))
+                    lepes2->kivanrajta_modosit(3);              ///loves
+    for (vector<WidAlap *> lepes : tabla)
+                for (WidAlap * lepes2 : lepes)
+                    lepes2->kijelolt=0;
+    rajz();
 }
 void Master::csekkelo(genv::event ev)
 {
@@ -76,12 +106,6 @@ void Master::csekkelo(genv::event ev)
                 lepes2->check=1;
             if (!lepes2->ischecked(ev.pos_x, ev.pos_y))
                 lepes2->check=0;
-            /*if (babuszintemp!=-1 and lepes2->check)
-            {
-                lepes2->kivanrajta_modosit(babuszintemp);
-                babuszintemp=-1;
-                voltlepes=1;
-            }*/
         }
 }
 void Master::vane_a_mezonbabu()
@@ -97,89 +121,91 @@ void Master::vane_a_mezonbabu()
 
 void Master::sorabanvan_jelolo()
 {
-    if (lepeskijeloloY>=0 and lepeskijeloloX>=0){
-    bool    utkozveXYY=1, //jobbra
-            utkozveXXYY=1, //jobbra le
-            utkozveXXY=1, //lefele
-            utkozveXXyy=1, //balra le
-            utkozveXyy=1, //balra
-            utkozvexxyy=1, //balra fel
-            utkozvexxY=1, //felfele
-            utkozvexxYY=1 //jobbra fel
-                        ; //Kódolás: nagybetü: pozitív irányba indul,    kisbetü: negatív irányba indul,    1db betü: stabil
+    if (lepeskijeloloY>=0 and lepeskijeloloX>=0)
+    {
+        bool    utkozveXYY=1, //jobbra
+                utkozveXXYY=1, //jobbra le
+                utkozveXXY=1, //lefele
+                utkozveXXyy=1, //balra le
+                utkozveXyy=1, //balra
+                utkozvexxyy=1, //balra fel
+                utkozvexxY=1, //felfele
+                utkozvexxYY=1 //jobbra fel
+                            ; //Kódolás: nagybetü: pozitív irányba indul,    kisbetü: negatív irányba indul,    1db betü: stabil
 
-    int seged1=1, seged2=1, seged3=1, seged4=1;
-    for(int i=0; i<darab; i++)
-        for(int j=0; j<darab; j++)
-        {
-            if (lepeskijeloloY<i and lepeskijeloloX==j and utkozveXXY) //LE
+        int seged1=1, seged2=1, seged3=1, seged4=1;
+        for(int i=0; i<darab; i++)
+            for(int j=0; j<darab; j++)
             {
-                if (tabla[i][j]->kivanrajta==0)
-                    tabla[i][j]->kijelolt=1;
-                else
-                    utkozveXXY=0;
-            }
-            if (lepeskijeloloY==i and lepeskijeloloX<j and utkozveXYY) //JOBBRA
-            {
-                if (tabla[i][j]->kivanrajta==0)
-                    tabla[i][j]->kijelolt=1;
-                else
-                    utkozveXYY=0;
-            }
-            if (lepeskijeloloY+seged1==i and lepeskijeloloX+seged1==j  and utkozveXXYY) //JOBBRA LE
-            {
-                if (tabla[i][j]->kivanrajta==0)
-                    tabla[i][j]->kijelolt=1;
-                else
-                    utkozveXXYY=0;
-                seged1++;
-            }
-
-            if (lepeskijeloloY+seged2==i and lepeskijeloloX-seged2==j  and utkozveXXyy) //balra LE
-            {
-                if (tabla[i][j]->kivanrajta==0)
-                    tabla[i][j]->kijelolt=1;
-                else
-                    utkozveXXyy=0;
-                seged2++;
-            }
-        }
-        for(int i=darab-1; 0<=i; i--)
-        for(int j=darab-1; 0<=j; j--)
+                if (lepeskijeloloY<i and lepeskijeloloX==j and utkozveXXY) //LE
                 {
-            if (lepeskijeloloY>i and lepeskijeloloX==j and utkozvexxY) //FEL         //
-            {
-                if (tabla[i][j]->kivanrajta==0)
-                    tabla[i][j]->kijelolt=1;
-                else
-                    utkozvexxY=0;
+                    if (tabla[i][j]->kivanrajta==0)
+                        tabla[i][j]->kijelolt=1;
+                    else
+                        utkozveXXY=0;
+                }
+                if (lepeskijeloloY==i and lepeskijeloloX<j and utkozveXYY) //JOBBRA
+                {
+                    if (tabla[i][j]->kivanrajta==0)
+                        tabla[i][j]->kijelolt=1;
+                    else
+                        utkozveXYY=0;
+                }
+                if (lepeskijeloloY+seged1==i and lepeskijeloloX+seged1==j  and utkozveXXYY) //JOBBRA LE
+                {
+                    if (tabla[i][j]->kivanrajta==0)
+                        tabla[i][j]->kijelolt=1;
+                    else
+                        utkozveXXYY=0;
+                    seged1++;
+                }
+
+                if (lepeskijeloloY+seged2==i and lepeskijeloloX-seged2==j  and utkozveXXyy) //balra LE
+                {
+                    if (tabla[i][j]->kivanrajta==0)
+                        tabla[i][j]->kijelolt=1;
+                    else
+                        utkozveXXyy=0;
+                    seged2++;
+                }
             }
-            if (lepeskijeloloY==i and lepeskijeloloX>j and utkozveXyy) //BALRA           //
+        for(int i=darab-1; 0<=i; i--)
+            for(int j=darab-1; 0<=j; j--)
             {
-                if (tabla[i][j]->kivanrajta==0)
-                    tabla[i][j]->kijelolt=1;
-                else
-                    utkozveXyy=0;
+                if (lepeskijeloloY>i and lepeskijeloloX==j and utkozvexxY) //FEL         //
+                {
+                    if (tabla[i][j]->kivanrajta==0)
+                        tabla[i][j]->kijelolt=1;
+                    else
+                        utkozvexxY=0;
+                }
+                if (lepeskijeloloY==i and lepeskijeloloX>j and utkozveXyy) //BALRA           //
+                {
+                    if (tabla[i][j]->kivanrajta==0)
+                        tabla[i][j]->kijelolt=1;
+                    else
+                        utkozveXyy=0;
+                }
+                if (lepeskijeloloY-seged3==i and lepeskijeloloX+seged3==j  and utkozvexxYY) //JOBBRA fel        //
+                {
+                    if (tabla[i][j]->kivanrajta==0)
+                        tabla[i][j]->kijelolt=1;
+                    else
+                        utkozvexxYY=0;
+                    seged3++;
+                }
+                if (lepeskijeloloY-seged4==i and lepeskijeloloX-seged4==j  and utkozvexxyy) //barla fel      //
+                {
+                    if (tabla[i][j]->kivanrajta==0)
+                        tabla[i][j]->kijelolt=1;
+                    else
+                        utkozvexxyy=0;
+                    seged4++;
+                }
             }
-            if (lepeskijeloloY-seged3==i and lepeskijeloloX+seged3==j  and utkozvexxYY) //JOBBRA fel        //
-            {
-                if (tabla[i][j]->kivanrajta==0)
-                    tabla[i][j]->kijelolt=1;
-                else
-                    utkozvexxYY=0;
-                seged3++;
-            }
-            if (lepeskijeloloY-seged4==i and lepeskijeloloX-seged4==j  and utkozvexxyy) //barla fel      //
-            {
-                if (tabla[i][j]->kivanrajta==0)
-                    tabla[i][j]->kijelolt=1;
-                else
-                    utkozvexxyy=0;
-                seged4++;
-            }
-        }
         lepeskijeloloX=-1;
-        lepeskijeloloY=-1;}
+        lepeskijeloloY=-1;
+    }
 }
 
 void Master::babuatrako()
@@ -203,7 +229,7 @@ void Master::babulevetel()
                 babuszintemp=lepes2->kivanrajta;
                 lepes2->kivanrajta_modosit(0);
 
-            }//lepes2->kijelolt=0;
+            }
         }
 }
 void Master::babufelrak()
