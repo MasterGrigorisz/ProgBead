@@ -89,13 +89,17 @@ void Master::handle(genv::event ev)
 {
     if (NemtudLepni_e==-1)
     {
-        cout<<"Jatek vege, nyertes: Fekete";
+        jatekvege(2);
+        cout<<"fekete";
         NemtudLepni_e=-3;
+        ki_kovetkezik=0;
     }
     if (NemtudLepni_e==-2)
     {
-        cout<<"Jatek vege, nyertes: Feher";
+        jatekvege(1);
+        cout<<"feher";
         NemtudLepni_e=-3;
+        ki_kovetkezik=0;
     }
     if (ki_kovetkezik==1) //fehér jön
     {
@@ -109,6 +113,22 @@ void Master::handle(genv::event ev)
         handle_seged(ev,2);
         handle_seged(ev,0);
     }
+}
+void Master::jatekvege(int gyoztes)
+{
+    stringstream sss;
+    int szin=0;
+    if (gyoztes==1)
+    {
+        szin=255;
+        sss<<"Nyertes:"<<endl<<" Feher";
+    }
+    else
+        sss<<"Nyertes:"<<endl<<" Fekete";
+    int sormagassag=gout.cascent();
+    gout<<move_to(mezomeret*darab/5*2,mezomeret*darab/5*2)<<color(szin,szin,szin)<<box(mezomeret*darab/5,mezomeret*darab/5)
+        <<move_to(mezomeret*darab/5*2+mezomeret/6,mezomeret*darab/5*2+mezomeret/2)<<color(255-szin,255-szin,255-szin)<<text(sss.str())
+        <<refresh;
 }
 void Master::lojunk(event ev)
 {

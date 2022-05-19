@@ -10,7 +10,7 @@ using namespace std;
 
 int main()
 {
-    Master tabla(10);
+    Master tabla(6);
     event ev;
     tabla.rajz();
     while(gin >> ev)
@@ -18,7 +18,6 @@ int main()
         tabla.handle(ev);
         if (ev.keycode == 27)
             break;
-        tabla.rajz();
     }
     return 0;
 }

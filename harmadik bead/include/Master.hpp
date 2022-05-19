@@ -25,6 +25,7 @@ protected:
     void lojunk(event ev);
     void handle_seged(event ev, int kijon);
     void sorabanvan_jelolo();
+    void jatekvege(int gyoztes);
 
     int darab, mezomeret,ki_kovetkezik, babuszintemp, lepeskijeloloX, lepeskijeloloY, NemtudLepni_e;
     bool voltlepes, voltloves ;
