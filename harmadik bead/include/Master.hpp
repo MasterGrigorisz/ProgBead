@@ -15,20 +15,19 @@ public:
     Master(int darab);
     void rajz();
     void handle(genv::event ev);
+protected:
     void csekkelo(genv::event ev);
     void babufelrak();
     void babuleptetes(int x, int y);
-protected:
     void vane_a_mezonbabu();
     void babulevetel();
     void babuatrako();
     void lojunk(event ev);
     void handle_seged(event ev, int kijon);
-    int darab, mezomeret, lepestortent,ki_kovetkezik, checkeltTemp;
-    int babuszintemp;
-    bool voltlepes, voltloves ;
-    int lepeskijeloloX, lepeskijeloloY;
     void sorabanvan_jelolo();
+
+    int darab, mezomeret,ki_kovetkezik, babuszintemp, lepeskijeloloX, lepeskijeloloY, NemtudLepni_e;
+    bool voltlepes, voltloves ;
     vector<vector<WidAlap*>> tabla;
     vector<Babu*> feher, fekete;
 };

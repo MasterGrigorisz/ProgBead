@@ -18,10 +18,9 @@ Master::Master(int dar)
     voltlepes=0;
     lepeskijeloloX=-1;
     lepeskijeloloY=-1;
-    lepestortent=0;
     ki_kovetkezik=1;
     voltloves=0;
-    checkeltTemp=ki_kovetkezik;
+    NemtudLepni_e=0;
     for (int i=0; i<darab; i++) ///MEZO
     {
         vector<WidAlap*> pakolos;
@@ -51,10 +50,20 @@ void Master::handle_seged(event ev, int kijon)
             for (WidAlap * lepes2 : lepes)
                 if (lepes2->check and lepes2->kivanrajta==kijon)
                 {
+
                     vane_a_mezonbabu();
                     sorabanvan_jelolo();
                     rajz();
 
+                    for (vector<WidAlap *> lepes : tabla)
+                        for (WidAlap * lepes2 : lepes)
+                            if (lepes2->kijelolt)
+                                NemtudLepni_e++;
+                    if (NemtudLepni_e==0)
+                    {
+                        NemtudLepni_e=0-kijon;
+                        break;
+                    }
                     babuatrako();
                     babulevetel();
                     if (voltlepes)
@@ -78,13 +87,25 @@ void Master::handle_seged(event ev, int kijon)
 }
 void Master::handle(genv::event ev)
 {
+    if (NemtudLepni_e==-1)
+    {
+        cout<<"Jatek vege, nyertes: Fekete";
+        NemtudLepni_e=-3;
+    }
+    if (NemtudLepni_e==-2)
+    {
+        cout<<"Jatek vege, nyertes: Feher";
+        NemtudLepni_e=-3;
+    }
     if (ki_kovetkezik==1) //fehér jön
     {
+        NemtudLepni_e=0;
         handle_seged(ev,1);
         handle_seged(ev,0);
     }
     if (ki_kovetkezik==2) //fekete jön
     {
+        NemtudLepni_e=0;
         handle_seged(ev,2);
         handle_seged(ev,0);
     }
@@ -114,7 +135,7 @@ void Master::csekkelo(genv::event ev)
         for (WidAlap * lepes2 : lepes1)
         {
             if (lepes2->ischecked(ev.pos_x, ev.pos_y))
-                   lepes2->check=1;
+                lepes2->check=1;
             if (!lepes2->ischecked(ev.pos_x, ev.pos_y))
                 lepes2->check=0;
         }
