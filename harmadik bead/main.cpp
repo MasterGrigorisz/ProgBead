@@ -4,14 +4,16 @@
 #include <iostream>
 #include <fstream>
 #include "Master.hpp"
-
+#include "Fomenu.hpp"
 using namespace genv;
 using namespace std;
 
+
 int main()
 {
-    Master tabla(6);
     event ev;
+    Fomenu kezdes;
+    Master tabla(kezdes.handle(ev));
     tabla.rajz();
     while(gin >> ev)
     {

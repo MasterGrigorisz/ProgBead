@@ -8,7 +8,6 @@
 #include <fstream>
 #include "WidAlap.hpp"
 #include "Mezo.hpp"
-#include "Babu.hpp"
 class Master
 {
 public:
@@ -30,7 +29,6 @@ protected:
     int darab, mezomeret,ki_kovetkezik, babuszintemp, lepeskijeloloX, lepeskijeloloY, NemtudLepni_e;
     bool voltlepes, voltloves ;
     vector<vector<WidAlap*>> tabla;
-    vector<Babu*> feher, fekete;
 };
 
 #endif // MASTER_HPP

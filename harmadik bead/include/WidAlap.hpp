@@ -10,9 +10,9 @@ class WidAlap
 protected:
     int posX, posY, sizeX, sizeY;
     WidAlap(int x, int y, int sx, int sy);
-
 public:
     int kivanrajta;
+    int szam;
     int tablaposX, tablaposY;
     bool check;
     bool kijelolt;

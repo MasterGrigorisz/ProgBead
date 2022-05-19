@@ -35,7 +35,6 @@ void Mezo::rajz()
         gout<<move_to(posX,posY)<<color(szin[1]-100,50,50)<<box(sizeX,sizeY);
     if (kivanrajta==3)
         gout<<move_to(posX,posY)<<color(0,0,0)<<line_to(posX+sizeX,posY+sizeY)<<move_to(posX+sizeX,posY)<<line_to(posX,posY+sizeY);
-
     //bábuk
     int szincsapat=0;
     if (kivanrajta==1 or kivanrajta==2)
@@ -49,8 +48,3 @@ void Mezo::rajz()
         gout<<move_to(posX+sizeX/3, posY+sizeY/3)<<color(szincsapat,szincsapat,szincsapat)<<box(sizeX/3,sizeY/3);
     }
 }
-/*void Mezo::handle(genv::event ev)
-{
-
-}*/
-

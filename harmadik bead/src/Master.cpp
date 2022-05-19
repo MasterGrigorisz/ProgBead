@@ -90,14 +90,12 @@ void Master::handle(genv::event ev)
     if (NemtudLepni_e==-1)
     {
         jatekvege(2);
-        cout<<"fekete";
         NemtudLepni_e=-3;
         ki_kovetkezik=0;
     }
     if (NemtudLepni_e==-2)
     {
         jatekvege(1);
-        cout<<"feher";
         NemtudLepni_e=-3;
         ki_kovetkezik=0;
     }
@@ -125,7 +123,6 @@ void Master::jatekvege(int gyoztes)
     }
     else
         sss<<"Nyertes:"<<endl<<" Fekete";
-    int sormagassag=gout.cascent();
     gout<<move_to(mezomeret*darab/5*2,mezomeret*darab/5*2)<<color(szin,szin,szin)<<box(mezomeret*darab/5,mezomeret*darab/5)
         <<move_to(mezomeret*darab/5*2+mezomeret/6,mezomeret*darab/5*2+mezomeret/2)<<color(255-szin,255-szin,255-szin)<<text(sss.str())
         <<refresh;
@@ -142,10 +139,8 @@ void Master::lojunk(event ev)
                         for (WidAlap * lepes4 : lepes3)
                             lepes4->kijelolt=0;
                     voltloves=1;
-
                     ki_kovetkezik=ki_kovetkezik%2+1;
                 }
-
     rajz();
 
 }
@@ -170,7 +165,6 @@ void Master::vane_a_mezonbabu()
                 lepeskijeloloY=lepes2->tablaposY;
             }
 }
-
 void Master::sorabanvan_jelolo()
 {
     if (lepeskijeloloY>=0 and lepeskijeloloX>=0)
