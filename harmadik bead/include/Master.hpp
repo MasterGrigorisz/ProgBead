@@ -19,10 +19,15 @@ public:
     void babufelrak();
     void babuleptetes(int x, int y);
 protected:
+    void vane_a_mezonbabu();
+    void babulevetel();
+    void babuatrako();
+
+
     int darab, mezomeret;
-    int babutemp;
+    int babuszintemp;
     bool voltlepes;
-    int lepeskijelolo[1];
+    int lepeskijeloloX, lepeskijeloloY;
     void sorabanvan_jelolo();
     vector<vector<WidAlap*>> tabla;
     vector<Babu*> feher, fekete;

@@ -14,16 +14,17 @@ Master::Master(int dar)
 {
     darab=dar;
     mezomeret=69;
-    babutemp=-1;
+    babuszintemp=-1;
     voltlepes=0;
-    lepeskijelolo[0]=-1;
-    lepeskijelolo[1]=-1;
+    lepeskijeloloX=-1;
+    lepeskijeloloY=-1;
     for (int i=0; i<darab; i++) ///MEZO
     {
         vector<WidAlap*> pakolos;
         for (int j=0; j<darab; j++)
         {
             Mezo* rakjad =new Mezo(mezomeret*j,mezomeret*i,mezomeret,mezomeret,j,i);
+            //cout<<j<<" master const "<<i<<endl;
             pakolos.push_back(rakjad);
         }
         tabla.push_back(pakolos);
@@ -33,7 +34,7 @@ Master::Master(int dar)
 
     for (vector<WidAlap *> lepes : tabla) ///random nullazas mert nyûgös
         for (WidAlap * lepes2 : lepes)
-            lepes2->check=0;
+            ;//lepes2->check=0;
 }
 void Master::rajz()
 {
@@ -44,44 +45,58 @@ void Master::rajz()
 }
 void Master::handle(genv::event ev)
 {
-
-
-
     if (ev.type == ev_mouse and ev.button==btn_left)
     {
-        ///lépés---
-        for (vector<WidAlap *> lepes1 : tabla) //ha van bábu a mezőn, lépjünk vele
-            for (WidAlap * lepes2 : lepes1)
-                if (lepes2->check and (lepes2->kivanrajta==1 or lepes2->kivanrajta==2) and !voltlepes)
-                {
-                    babutemp=lepes2->kivanrajta;
-                    lepes2->kivanrajta_modosit(0);
-                }
-        //jelöljük ki hova léphet
+        csekkelo(ev);
+        vane_a_mezonbabu();
+        sorabanvan_jelolo();
+        rajz();
+
+        babuatrako();
+        babulevetel();
+        if (!voltlepes)
+        {
+            //sorabanvan_jelolo();
+            rajz();
+        }
+        voltlepes=0;
+    }
+}
+void Master::csekkelo(genv::event ev)
+{
+    for (vector<WidAlap *> lepes1 : tabla)
+        for (WidAlap * lepes2 : lepes1)
+        {
+            if (lepes2->ischecked(ev.pos_x, ev.pos_y))
+                lepes2->check=1;
+            if (!lepes2->ischecked(ev.pos_x, ev.pos_y))
+                lepes2->check=0;
+            /*if (babuszintemp!=-1 and lepes2->check)
+            {
+                lepes2->kivanrajta_modosit(babuszintemp);
+                babuszintemp=-1;
+                voltlepes=1;
+            }*/
+        }
+}
+void Master::vane_a_mezonbabu()
+{
         for (vector<WidAlap *> lepes1 : tabla)
             for (WidAlap * lepes2 : lepes1)
                 if (lepes2->check and (lepes2->kivanrajta==1 or lepes2->kivanrajta==2))
                 {
-                    lepeskijelolo[0]=lepes2->tablapos[0];
-                    lepeskijelolo[1]=lepes2->tablapos[1];
+                    lepeskijeloloX=lepes2->tablaposX;
+                    lepeskijeloloY=lepes2->tablaposY;
                 }
-        sorabanvan_jelolo();
-
-        ///---
-        voltlepes=0;
-        csekkelo(ev);
-    }
-
-    rajz();
 }
+
 void Master::sorabanvan_jelolo()
 {
     //reset
     /*for (vector<WidAlap *> lepes1 : tabla)
             for (WidAlap * lepes2 : lepes1)
-                lepes2->kijelolt=0;
-    //--*/
-    cout<<lepeskijelolo[0]<<" : "<<lepeskijelolo[1]<<endl;
+                lepes2->kijelolt=0;*/
+    //--
     bool    utkozveXYY=1, //jobbra
             utkozveXXYY=1, //jobbra le
             utkozveXXY=1, //lefele
@@ -94,55 +109,53 @@ void Master::sorabanvan_jelolo()
     int kar1=0, kar2;
     for (vector<WidAlap *> lepes1 : tabla)
     {
-        kar1++;
+
         kar2=0;
         for (WidAlap * lepes2 : lepes1)
         {
-            if (lepeskijelolo[0]<kar1 and lepeskijelolo[1]==kar2 and utkozveXYY) //jobbra
+            if (lepeskijeloloY<kar1 and lepeskijeloloX==kar2 and utkozveXYY) //jobbra
             {
                 if (lepes2->kivanrajta==0)
                     lepes2->kijelolt=1;
                 else
                     utkozveXYY=0;
             }
-            if (lepeskijelolo[0]<kar1 and lepeskijelolo[1]==kar2 and utkozveXYY) //jobbra le
+            if (lepeskijeloloY<kar1 and lepeskijeloloX==kar2 and utkozveXYY) //jobbra le
             {
                 if (lepes2->kivanrajta==0)
                     lepes2->kijelolt=1;
                 else
                     utkozveXYY=0;
             }
-
-
-
+        kar2++;
         }
+        kar1++;
     }
-
     int lept=0;
-    /*for (int i=lepeskijelolo[0]; i<=darab;i++)
-            tabla[lepeskijelolo[0],lepeskijelolo[1]+lept]->kijelolt=1;*/
-
-
-    /*if (lepes2->tablapos[0]==lepeskijelolo[0] or lepes2->tablapos[1]==lepeskijelolo[1])
-        lepes2->kijelolt=1;*/
 }
-void Master::csekkelo(genv::event ev)
+
+void Master::babuatrako()
 {
     for (vector<WidAlap *> lepes1 : tabla)
         for (WidAlap * lepes2 : lepes1)
-        {
-            if (lepes2->ischecked(ev.pos_x, ev.pos_y))
-                lepes2->check=1;
-            if (!lepes2->ischecked(ev.pos_x, ev.pos_y))
-                lepes2->check=0;
-            if (babutemp!=-1 and lepes2->check)
+            if (babuszintemp!=-1 and lepes2->check)
             {
-                lepes2->kivanrajta_modosit(babutemp);
-                babutemp=-1;
+                lepes2->kivanrajta_modosit(babuszintemp);
+                babuszintemp=-1;
                 voltlepes=1;
             }
-        }
+}
+void Master::babulevetel()
+{
+    for (vector<WidAlap *> lepes1 : tabla) //ha van bábu a mezőn, lépjünk vele
+            for (WidAlap * lepes2 : lepes1)
+                {if (lepes2->check and (lepes2->kivanrajta==1 or lepes2->kivanrajta==2) and !voltlepes)
+                {
+                    babuszintemp=lepes2->kivanrajta;
+                    lepes2->kivanrajta_modosit(0);
 
+                }//lepes2->kijelolt=0;
+                }
 }
 void Master::babufelrak()
 {
@@ -151,13 +164,13 @@ void Master::babufelrak()
         for (vector<WidAlap *> lepes1 : tabla)
             for (WidAlap * lepes2 : lepes1)
             {
-                if(lepes2->tablapos[0]==0 and lepes2->tablapos[1]==2)
+                if(lepes2->tablaposX==0 and lepes2->tablaposY==2)
                     lepes2->kivanrajta_modosit(1);
-                if(lepes2->tablapos[0]==3 and lepes2->tablapos[1]==0)
+                if(lepes2->tablaposX==3 and lepes2->tablaposY==0)
                     lepes2->kivanrajta_modosit(1);
-                if(lepes2->tablapos[0]==5 and lepes2->tablapos[1]==3)
+                if(lepes2->tablaposX==5 and lepes2->tablaposY==3)
                     lepes2->kivanrajta_modosit(2);
-                if(lepes2->tablapos[0]==2 and lepes2->tablapos[1]==5)
+                if(lepes2->tablaposX==2 and lepes2->tablaposY==5)
                     lepes2->kivanrajta_modosit(2);
             }
     }
@@ -166,17 +179,17 @@ void Master::babufelrak()
         for (vector<WidAlap *> lepes1 : tabla)
             for (WidAlap * lepes2 : lepes1)
             {
-                if(lepes2->tablapos[0]==0 and lepes2->tablapos[1]==2)
+                if(lepes2->tablaposX==0 and lepes2->tablaposY==2)
                     lepes2->kivanrajta_modosit(1);
-                if(lepes2->tablapos[0]==3 and lepes2->tablapos[1]==0)
+                if(lepes2->tablaposX==3 and lepes2->tablaposY==0)
                     lepes2->kivanrajta_modosit(1);
-                if(lepes2->tablapos[0]==7 and lepes2->tablapos[1]==1)
+                if(lepes2->tablaposX==7 and lepes2->tablaposY==1)
                     lepes2->kivanrajta_modosit(1);
-                if(lepes2->tablapos[0]==0 and lepes2->tablapos[1]==6)
+                if(lepes2->tablaposX==0 and lepes2->tablaposY==6)
                     lepes2->kivanrajta_modosit(2);
-                if(lepes2->tablapos[0]==4 and lepes2->tablapos[1]==7)
+                if(lepes2->tablaposX==4 and lepes2->tablaposY==7)
                     lepes2->kivanrajta_modosit(2);
-                if(lepes2->tablapos[0]==7 and lepes2->tablapos[1]==5)
+                if(lepes2->tablaposX==7 and lepes2->tablaposY==5)
                     lepes2->kivanrajta_modosit(2);
             }
     }
@@ -185,21 +198,21 @@ void Master::babufelrak()
         for (vector<WidAlap *> lepes1 : tabla)
             for (WidAlap * lepes2 : lepes1)
             {
-                if(lepes2->tablapos[0]==0 and lepes2->tablapos[1]==3)
+                if(lepes2->tablaposX==0 and lepes2->tablaposY==3)
                     lepes2->kivanrajta_modosit(1);
-                if(lepes2->tablapos[0]==3 and lepes2->tablapos[1]==0)
+                if(lepes2->tablaposX==3 and lepes2->tablaposY==0)
                     lepes2->kivanrajta_modosit(1);
-                if(lepes2->tablapos[0]==6 and lepes2->tablapos[1]==0)
+                if(lepes2->tablaposX==6 and lepes2->tablaposY==0)
                     lepes2->kivanrajta_modosit(1);
-                if(lepes2->tablapos[0]==9 and lepes2->tablapos[1]==3)
+                if(lepes2->tablaposX==9 and lepes2->tablaposY==3)
                     lepes2->kivanrajta_modosit(1);
-                if(lepes2->tablapos[0]==0 and lepes2->tablapos[1]==6)
+                if(lepes2->tablaposX==0 and lepes2->tablaposY==6)
                     lepes2->kivanrajta_modosit(2);
-                if(lepes2->tablapos[0]==3 and lepes2->tablapos[1]==9)
+                if(lepes2->tablaposX==3 and lepes2->tablaposY==9)
                     lepes2->kivanrajta_modosit(2);
-                if(lepes2->tablapos[0]==6 and lepes2->tablapos[1]==9)
+                if(lepes2->tablaposX==6 and lepes2->tablaposY==9)
                     lepes2->kivanrajta_modosit(2);
-                if(lepes2->tablapos[0]==9 and lepes2->tablapos[1]==6)
+                if(lepes2->tablaposX==9 and lepes2->tablaposY==6)
                     lepes2->kivanrajta_modosit(2);
             }
     }

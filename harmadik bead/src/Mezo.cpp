@@ -8,8 +8,9 @@ using namespace std;
 Mezo::Mezo(int x, int y, int sx, int sy, int Tx, int Ty): WidAlap(x,y,sx,sy)
 {
 
-    tablapos[0]=Tx;
-    tablapos[1]=Ty;
+    tablaposX=Tx;
+    tablaposY=Ty;
+    //cout<<tablaposX<<" mezo konst "<<tablaposY<<endl;
     if (Tx %2 ==0 and Ty % 2 ==0 or Tx %2 ==1 and Ty % 2 ==1)
     {
         szin[0]=255;
@@ -38,10 +39,10 @@ void Mezo::rajz()
 {
     if (check)
         gout<<move_to(posX,posY)<<color(0,200,0)<<box(sizeX,sizeY);
-    else if(kijelolt)
-        gout<<move_to(posX,posY)<<color(szin[1]-100,0,0)<<box(sizeX,sizeY);
     else
         gout<<move_to(posX,posY)<<color(szin[0],szin[1],szin[2])<<box(sizeX,sizeY);
+    if(kijelolt)
+        gout<<move_to(posX,posY)<<color(szin[1]-100,0,0)<<box(sizeX,sizeY);
     if (kivanrajta==3)
         gout<<move_to(posX,posY)<<color(0,0,0)<<line_to(posX+sizeX,posY+sizeY)<<move_to(posX+sizeX,posY)<<line_to(posX,posY+sizeY);
 

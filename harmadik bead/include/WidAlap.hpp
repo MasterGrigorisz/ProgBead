@@ -13,7 +13,7 @@ protected:
 
 public:
     int kivanrajta;
-    int tablapos[1];
+    int tablaposX, tablaposY;
     bool check;
     bool kijelolt;
     WidAlap(int x, int y, int sx, int sy);

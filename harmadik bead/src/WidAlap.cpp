@@ -10,9 +10,9 @@ WidAlap::WidAlap(int x, int y, int sx, int sy) : posX(x), posY(y), sizeX(sx), si
 }
 bool WidAlap::ischecked(int egerX, int egerY)
 {
-    return  egerX > posX            and
+    return  egerX >= posX            and
             egerX < posX + sizeX    and
-            egerY > posY            and
+            egerY >= posY            and
             egerY < posY + sizeY;
 }
 /*int WidAlap::kivanrajta_leker()
